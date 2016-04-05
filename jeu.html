@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel=stylesheet type="text/css" href="style.css">
+</head>
+
+<body>
+
+<div id="container">
+</div>
+
+<div class="formulaire">
+    <h1>JEUX DE COMBAT EN RPG</h1>
+    <form>
+        <fieldset>
+            <legend> Choisissez la direction :</legend>
+            <input type="radio" name="direction" value="haut"> HAUT <br />
+            <input type="radio" name="direction" value="bas"> BAS <br />
+            <input type="radio" name="direction" value="gauche"> GAUCHE <br />
+            <input type="radio" name="direction" value="droite"> DROITE <br />
+        </fieldset>
+
+        <fieldset>
+            <legend> Choisissez la distance :</legend>
+            <input type="radio" name="distance" value="1"> 1 case <br />
+            <input type="radio" name="distance" value="2"> 2 cases <br />
+            <input type="radio" name="distance" value="3"> 3 cases <br />
+        </fieldset>
+    </form>
+
+    <button id="jouer">Jouer</button>
+    <br />
+
+    <textarea id="commentaires" name="commentaires"></textarea>
+</div>
+
+<!--<script
+        src="https://code.jquery.com/jquery-2.2.2.min.js"
+        integrity="sha256-36cp2Co+/62rEAAYHLmRCPIych47CvdM+uTBJwSzWjI="
+        crossorigin="anonymous">
+
+</script>-->
+<script src="damier.js"></script>
+<script>
+    var commentaires = document.getElementById('commentaires');
+
+    var grille = new Grille();
+    grille.init();
+
+    var armes = new Array();
+    armes['bouteille'] = 10;
+    armes['caillou'] = 10;
+    armes['baton'] = 20;
+    armes['couteau'] = 30;
+    armes['épée'] = 40;
+    armes['massue'] = 50;
+
+    var baton = new Arme('baton', armes['baton']);
+    baton.arme_init(grille);
+    var couteau = new Arme('couteau', armes['couteau']);
+    couteau.arme_init(grille);
+    var épée = new Arme('épée', armes['épée']);
+    épée.arme_init(grille);
+    var massue = new Arme('massue', armes['massue']);
+    massue.arme_init(grille);
+
+    joueur1 = new Joueur('Joueur1', 'caillou');
+    joueur1.init(grille);
+
+    joueur2 = new Joueur('Joueur2', 'bouteille');
+    joueur2.init(grille);
+
+    var combat = false;
+    var joueur = 1;
+    var jouer = document.getElementById('jouer');
+    if (combat == false) {
+        commentaires.innerHTML += joueur1.nom + ', c\'est à vous de jouer.';
+        jouer.addEventListener('click', function () {
+                if (joueur == 1) {
+                    commentaires.innerHTML += '\n' + joueur1.seDeplacer(grille);
+                    commentaires.innerHTML += '\n' + joueur1.ramasser_arme(grille);
+                    combat = joueur1.combat(grille);
+                    if (combat == false) {
+                        commentaires.innerHTML += '\n' + joueur2.nom + ', c\'est à vous de jouer.';
+                        joueur = 2;
+                    }
+                }
+                 else if (joueur == 2) {
+                     commentaires.innerHTML += '\n' + joueur2.seDeplacer(grille);
+                     commentaires.innerHTML += '\n' + joueur2.ramasser_arme(grille);
+                     combat = joueur2.combat(grille);
+                    if (combat == false) {
+                        commentaires.innerHTML += '\n' + joueur1.nom + ', c\'est à vous de jouer.';
+                        joueur = 1;
+                    }
+                 }
+            if (combat == true) {
+                commentaires.innerHTML += '\n----------------STOP -----------------';
+                commentaires.innerHTML += '\n Un combat à mort s\'engage.';
+                jouer.style.display='none';
+
+                var bouton_attaq = document.createElement('button');
+                bouton_attaq.id = 'attaque';
+                bouton_attaq.innerHTML = 'Attaquer';
+                jouer.parentNode.insertBefore(bouton_attaq, jouer);
+
+                var bouton_defense = document.createElement('button');
+                bouton_defense.id = 'defense';
+                bouton_defense.innerHTML = 'Se Défendre';
+                jouer.parentNode.insertBefore(bouton_defense, jouer);
+
+                if (joueur == 1) {
+                    commentaires.innerHTML += '\n' + joueur1.attaque_a_mort(joueur2);
+                    joueur = 2;
+                    }
+                else if (joueur == 2) {
+                    commentaires.innerHTML += '\n' + joueur2.attaque_a_mort(joueur1);
+                    joueur = 1;
+                    }
+                var attaque = document.getElementById('attaque');
+                attaque.addEventListener('click', function () {
+                    if (joueur == 1) {
+                        commentaires.innerHTML += '\n' + joueur1.attaque_a_mort(joueur2);
+                        joueur = 2;
+                    }
+                    else if (joueur == 2) {
+                        commentaires.innerHTML += '\n' + joueur2.attaque_a_mort(joueur1);
+                        joueur = 1;
+                    }
+                });
+
+                var defense = document.getElementById('defense');
+                defense.addEventListener('click', function () {
+                    if (joueur == 1) {
+                        commentaires.innerHTML += '\n' + joueur1.defendre_de(joueur2);
+                        joueur = 2;
+                    }
+                    else if (joueur == 2) {
+                        commentaires.innerHTML += '\n' + joueur2.defendre_de(joueur1);
+                        joueur = 1;
+                    }
+                });
+            }
+
+
+        });
+    }
+
+
+</script>
+
+</body>
+</html>
+
